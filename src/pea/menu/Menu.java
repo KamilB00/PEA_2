@@ -12,7 +12,7 @@ public class Menu {
 
     private final Graph instance = Graph.getInstance();
     public static Integer timeInSeconds;
-    public static Integer coolingParameter;
+    public static double coolingParameter;
     public Menu() throws IOException {
         mainWindow();
     }
@@ -40,20 +40,19 @@ public class Menu {
             case 3:{
                 Scanner scan = new Scanner(System.in);
                 System.out.println("Enter cooling parameter :");
-                coolingParameter = scan.nextInt();
+                coolingParameter = scan.nextDouble();
                 mainWindow();
                 break;
             }
             case 4:{
                 SimulatedAnnealing sa = new SimulatedAnnealing();
                 sa.run();
-
+                mainWindow();
                 break;
             }
             case 5:{
 
             }
-
 
             case 0: {
                 System.exit(0);
