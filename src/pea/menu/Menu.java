@@ -1,6 +1,7 @@
 package pea.menu;
 
 import pea.algorithms.NearestNeighbor;
+import pea.algorithms.SimulatedAnnealing;
 import pea.graph.Graph;
 
 import java.io.IOException;
@@ -9,6 +10,9 @@ import java.util.Scanner;
 
 public class Menu {
 
+    private final Graph instance = Graph.getInstance();
+    public static Integer timeInSeconds;
+    public static Integer coolingParameter;
     public Menu() throws IOException {
         mainWindow();
     }
@@ -21,14 +25,35 @@ public class Menu {
                 Scanner scan = new Scanner(System.in);
                 String path = scan.nextLine();
                 String filePath = "/Users/kamilbonkowski/Downloads/instancjeAll/"+path;
-                Graph.getInstance().setGraph(Graph.getInstance().fromFile(filePath));
-                NearestNeighbor nearestNeighbor = new NearestNeighbor();
-                nearestNeighbor.run(Graph.getInstance().getGraph());
-                System.out.println(nearestNeighbor.getPath());
-                System.out.println(nearestNeighbor.getCost());
+                instance.setGraph(Graph.getInstance().fromFile(filePath));
+                NearestNeighbor.run(instance.getGraph());
                 mainWindow();
                 break;
             }
+            case 2: {
+                Scanner scan = new Scanner(System.in);
+                System.out.println("Enter time [seconds] :");
+                timeInSeconds = scan.nextInt();
+                mainWindow();
+                break;
+            }
+            case 3:{
+                Scanner scan = new Scanner(System.in);
+                System.out.println("Enter cooling parameter :");
+                coolingParameter = scan.nextInt();
+                mainWindow();
+                break;
+            }
+            case 4:{
+                SimulatedAnnealing sa = new SimulatedAnnealing();
+                sa.run();
+
+                break;
+            }
+            case 5:{
+
+            }
+
 
             case 0: {
                 System.exit(0);
@@ -57,6 +82,7 @@ public class Menu {
                 "2. Set run time \n" +
                 "3. Set cooling parameter [a]\n" +
                 "4. Run Simulated Annealing \n"+
+                "5. Show graph \n"+
                 "0. Exit";
         return menu;
     }
