@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SimulatedAnnealing {
-
     private final int[][] graph = Graph.getInstance().getGraph();
     private List<Integer> currentPath;
     private List<Integer> bestPath;
@@ -18,37 +17,37 @@ public class SimulatedAnnealing {
     public void run() {
         currentPath = NearestNeighbor.getPath();
         bestPath = NearestNeighbor.getPath();
-        temperature = getCost(currentPath) * 2.0;
         bestCost = getCost(currentPath);
+        temperature = getCost(currentPath) * 2;
 
         long finish = System.currentTimeMillis() + timeInSeconds * 1000L;
         do {
             List<Integer> changedPath = swapCurrentPath();
 
-            int changedPathCost = getCost(changedPath);
             int currentPathCost = getCost(currentPath);
+            int changedPathCost = getCost(changedPath);
 
             if (changedPathCost - currentPathCost  <= 0) {
                 currentPath = new ArrayList<>(changedPath);
 
-                if(currentPathCost < bestCost) {
-                    bestCost = currentPathCost;
+                if(changedPathCost < bestCost) {
+                    bestCost = changedPathCost;
                     bestPath = new ArrayList<>(currentPath);
                     System.out.println("FOUND");
-                    System.out.println("Current path: "+ currentPath);
-                    System.out.println("Current cost: "+ currentPathCost);
                 }
 
             } else {
                 if ((Math.exp((-1 * (changedPathCost - currentPathCost)) / temperature) > Math.random())) {
                     currentPath = new ArrayList<>(changedPath);
                     System.out.println("ACCEPT WORSE");
-                    System.out.println("Current path: "+ currentPath);
-                    System.out.println("Current cost: "+ currentPathCost);
                 }
             }
+
+            System.out.println(temperature);
+            //System.out.println(Math.exp((-1 * (changedPathCost - currentPathCost)) / temperature));
             temperature = temperature * coolingParameter;
-        } while (finish - System.currentTimeMillis() > 0);
+
+        } while (finish - System.currentTimeMillis() > 0 && temperature > 0.0001);
 
 
         System.out.println("Best path: "+ bestPath);
@@ -76,5 +75,4 @@ public class SimulatedAnnealing {
 
         return changed;
     }
-
 }
