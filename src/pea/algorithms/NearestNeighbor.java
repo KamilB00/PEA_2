@@ -5,15 +5,14 @@ import java.util.stream.Collectors;
 
 public class NearestNeighbor {
 
-    private List<List<Integer>> allPairs;
-    private List<Integer> distances;
-    private boolean[] visited;
+    private static  List<List<Integer>> allPairs;
+    private static List<Integer> distances;
 
-    public void run(int[][] graph) {
+    public static void run(int[][] graph) {
 
         allPairs = new ArrayList<>();
         distances = new ArrayList<>();
-        visited = new boolean[graph.length];
+        boolean[] visited = new boolean[graph.length];
         int currentVertex = 0;
         int destinationVertex = 0;
         int min;
@@ -38,7 +37,7 @@ public class NearestNeighbor {
         distances.add(graph[lastIndex][0]);
     }
 
-    public List<Integer> getPath() {
+    public static List<Integer> getPath() {
         List<Integer> path = allPairs.stream()
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList())
@@ -49,7 +48,7 @@ public class NearestNeighbor {
         return path;
     }
 
-    public Integer getCost() {
+    public static Integer getCost() {
         return distances.stream()
                 .reduce(Integer::sum)
                 .orElseThrow();
